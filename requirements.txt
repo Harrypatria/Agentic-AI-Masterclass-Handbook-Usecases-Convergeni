@@ -1,0 +1,56 @@
+# Agentic AI: Building AI Agents and Retrieval Systems
+# A Masterclass in LLM Agents, RAG, and Production Deployment
+#
+# Full dependency list across all sixteen chapters' code examples.
+# Install everything with: pip install -r requirements.txt
+# Or install only what a specific chapter needs, per that chapter's own
+# module docstring and the book's own "Installation and Package
+# Requirements" front matter section.
+#
+# Python 3.10 or later is assumed throughout.
+
+# LLM provider SDKs
+openai
+anthropic
+
+# Agent frameworks and orchestration
+langchain
+langchain-openai
+langgraph
+phidata
+
+# Retrieval, vector stores, and evaluation
+chromadb
+lancedb
+raglite
+rerankers
+ragas
+duckduckgo-search
+
+# Data, machine learning, and explainability
+pandas
+numpy
+scikit-learn
+shap
+yfinance
+
+# Fine-tuning (needs a CUDA-capable GPU; see Chapter 11)
+torch
+transformers
+peft
+bitsandbytes
+accelerate
+datasets
+
+# Validation, serving, and security
+pydantic
+fastapi
+uvicorn[standard]
+starlette
+slowapi
+httpx
+nest_asyncio  # lets asyncio.run() nest inside a Jupyter kernel's own event loop
+tiktoken
+python-dotenv
+PyYAML
+pytest
