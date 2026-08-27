@@ -76,11 +76,12 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Most files need nothing further. Where a file's own docstring says it needs `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, create a `.env` file in the same folder as that script:
+Most files need nothing further. Where a file's own docstring says it needs `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, create a `.env` file in the same folder as that script. You may rename env example uploaded on the repository to be .env and put the API key accordingly:
 
 ```
-OPENAI_API_KEY=your-real-key-here
-ANTHROPIC_API_KEY=your-real-key-here
+OPENAI_API_KEY="Put your Open AI API Key here"
+ANTHROPIC_API_KEY=
+COHERE_API_KEY="Put your Cohere API Key here"
 ```
 
 and load it before running, following the handbook's own Chapter 5 security discipline of never hardcoding a key into source:
