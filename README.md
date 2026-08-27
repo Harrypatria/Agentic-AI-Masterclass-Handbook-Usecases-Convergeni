@@ -75,3 +75,89 @@ Every `.py` file is mirrored as a fully executed `.ipynb` notebook:
 
 ```bash
 jupyter notebook chapter_10/01_the_ai_health_copilot.ipynb
+
+Quick Start
+Bashpython -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+Most files require nothing further.
+API Keys
+Where a file’s docstring indicates keys are needed, create a .env in the same folder (or rename the provided example):
+envOPENAI_API_KEY="your-key-here"
+ANTHROPIC_API_KEY=
+COHERE_API_KEY="your-key-here"
+Bashpip install python-dotenv
+Load with python-dotenv (never hard-code keys — follow Chapter 5 security practice).
+Special Requirements
+
+Chapter 11 QLoRA → CUDA-capable GPU
+Chapter 15 01a_... → Reading exercise only (not runnable)
+Chapters 3, 4, 6, 8, 11 → Extra packages listed in each file’s docstring beyond requirements.txt
+
+
+Citation
+Handbook
+bibtex@book{patria2026agentic,
+  author    = {Patria, Harry and Setiadi, Felix A.},
+  title     = {Agentic AI: Building AI Agents and Retrieval Systems},
+  subtitle  = {A Masterclass in LLM Agents, RAG, and Production Deployment},
+  year      = {2026},
+  publisher = {Patria \& Co.},
+  doi       = {10.5281/zenodo.22049522}
+}
+In-text: (Patria & Setiadi, 2026)
+Code Supplement
+Patria, H., & Setiadi, F. A. (2026). Code supplement to Agentic AI: Building AI agents and retrieval systems [Computer software]. Patria & Co. https://doi.org/10.5281/zenodo.22049522
+When citing a specific file:
+
+Chapter 10, 01_the_ai_health_copilot.py (Patria & Setiadi, 2026)
+
+Authors
+Dr. Harry Patria, PMP®, PMI-CPMAI®
+
+CEO & Chief Data and AI Officer, Patria & Co.
+
+Principal AI Software Engineer, i-Vigilant Technologies UK
+
+Co-founder, Convergence AI
+Felix A. Setiadi, MSc.
+
+Vice President of Data and AI
+
+Co-founder, Convergence AI
+
+Full-stack AI developer across oil & gas, mining, finance and retail
+Full biographies appear in the handbook.
+
+Permitted Use
+This code supplement is provided under the same terms as the handbook’s Permitted Use page:
+
+Research, publications, teaching and social media content are welcome
+Must remain consistent with educational purpose and cite the handbook
+Does not extend to repackaging as a competing commercial product
+
+For uses beyond this scope, contact the copyright holders.
+
+Publisher
+Patria & Co.
+
+Artificial Intelligence Research Division
+
+www.patriaco.co.uk
+Exclusive distribution
+
+Convergeni
+
+Sovereign Plaza, 12th Floor, Jl. TB Simatupang Kav. 36
+
+South Jakarta 13730, Indonesia
+Email: contact@convergeni.com
+
+
+Copyright © 2026
+
+Dr. Harry Patria, PMP®, PMI-CPMAI® & Felix A. Setiadi, MSc.
+
+All rights reserved.
+
+```
