@@ -1,0 +1,9 @@
+# Fill in real values below. This file is read by python-dotenv.
+# Never commit this file — add ".env" to .gitignore.
+
+OPENAI_API_KEY="Put your Open AI API Key here"
+ANTHROPIC_API_KEY=
+COHERE_API_KEY="Put your Cohere API Key here"
+
+## If you already attended masterclass Agentic AI, you may get API Key on masterclass Agentic AI
+
