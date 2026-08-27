@@ -90,10 +90,8 @@ jupyter notebook chapter_10/01_the_ai_health_copilot.ipynb
 ```Set up
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
 ```
-
-### Citation
+```Citation
 @book{patria2026agentic,
   author    = {Patria, Harry and Setiadi, Felix A.},
   title     = {Agentic AI: Building AI Agents and Retrieval Systems},
@@ -103,56 +101,6 @@ pip install -r requirements.txt
   doi       = {10.5281/zenodo.22049522},
   url       = {https://doi.org/10.5281/zenodo.22049522}
 }
-
-Authors
-Dr. Harry Patria, PMP®, PMI-CPMAI®
-
-CEO & Chief Data and AI Officer, Patria & Co.
-
-Principal AI Software Engineer, i-Vigilant Technologies UK
-
-Co-founder, Convergence AI
-Seven degrees including MSc Data Science (Newcastle) and MSc Business Analytics (Imperial College London), plus dual doctorates from Universitas Indonesia and the University of Strathclyde.
-Felix A. Setiadi, MSc.
-
-Vice President of Data and AI
-
-Co-founder, Convergence AI
-
-Full-stack AI practitioner across oil & gas, mining, palm oil, finance and retail
-MSc Business Analytics (Imperial College London, Distinction) and BEng Industrial Engineering (University of Hong Kong).
-Full biographies appear in the handbook.
-
-Permitted Use
-This code supplement is offered under the same terms as the handbook’s Permitted Use page:
-
-Readers may use it for research, publications, teaching and social media content
-Use must remain consistent with its educational purpose and must cite the handbook
-Does not extend to repackaging this code or the handbook as a competing commercial product
-
-For any other use, contact the copyright holders directly.
-
-Publisher
-Patria & Co.
-
-Artificial Intelligence Research Division
-
-www.patriaco.co.uk
-Exclusive distribution
-
-Convergeni
-
-Sovereign Plaza, 12th Floor
-
-Jl. TB Simatupang Kav. 36
-
-South Jakarta 13730, Indonesia
-Purchase the handbook: https://convergeni.com/browsebooks
-Email: contact@convergeni.com
-
-
-Copyright © 2026
-
-Dr. Harry Patria, PMP®, PMI-CPMAI® and Felix A. Setiadi, MSc.
-
-All rights reserved.
+```
+pip install -r requirements.txt
+```
