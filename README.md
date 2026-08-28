@@ -101,6 +101,7 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
   doi       = {10.5281/zenodo.22049522},
   url       = {https://doi.org/10.5281/zenodo.22049522}
 }
+```
 
 ```
 pip install -r requirements.txt
