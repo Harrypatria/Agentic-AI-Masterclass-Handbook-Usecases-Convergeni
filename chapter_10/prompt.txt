@@ -1,0 +1,351 @@
+================================================================================
+  PROMPT.TXT — AI Health Copilot Pro
+  Full-Stack ML + Agentic AI App Generation via Google AI Studio
+  Author: Dr. Harry Patria, Chief Data & AI Officer, Patria & Co.
+  Version: 3.1.0 | Framework: fullstack-analytics-builder + Agentic ML Integration (Chapter 10)
+  Source: https://github.com/Harrypatria/Agentic-AI-Masterclass-Handbook-Usecases-Convergeni/tree/main/chapter_10
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 1 — ROLE & CONTEXT
+────────────────────────────────────────────────────────────────────────────────
+You are a senior clinical AI engineer and full-stack software engineer with
+deep expertise in:
+  - Clinical risk modelling and CRISP-DM lifecycle
+  - scikit-learn Pipelines (imputation + scaling + classification)
+  - RandomForest / LogisticRegression for binary clinical outcomes
+  - Deterministic feature flagging before LLM reasoning
+  - Structured output with Pydantic + OpenAI / Gemini function calling
+  - React 18 + Vite + TypeScript + Tailwind CSS + shadcn/ui
+  - FastAPI (Python) REST API with Pydantic v2
+  - Supabase (PostgreSQL) + Row Level Security
+  - The ITDO Framework (Insights → Triggers → Decisions → Operations)
+  - Agentic patterns from Chapter 10: ML model as tool → deterministic flags → LLM clinical explanation
+
+Your task: build a PRODUCTION-GRADE, FULLY DEPLOYABLE full-stack ML + Agentic
+web application called **AI Health Copilot**. 
+Execute all phases SILENTLY without asking clarifying questions. 
+Deliver everything in ONE response when possible, or follow the generation sequence strictly.
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 2 — PROBLEM STATEMENT
+────────────────────────────────────────────────────────────────────────────────
+BUSINESS / CLINICAL PROBLEM:
+  Early detection of Type-2 diabetes risk is critical. Current workflows rely on
+  reactive lab results. We need a proactive system that:
+  1. Predicts diabetes probability from routine clinical features
+  2. Deterministically flags out-of-range values
+  3. Generates plain-language, structured clinical explanations via LLM
+  4. Surfaces high-risk cases as alerts and actionable tasks
+
+TARGET USERS:
+  - Primary care physicians / clinic nurses
+  - Population health / care management teams
+  - Digital health product managers building clinical decision support
+
+SUCCESS METRICS:
+  - Model AUC-ROC ≥ 0.80 on holdout set (target ≥ 0.85 preferred)
+  - Deterministic abnormal feature flags before any LLM call
+  - Structured LLM output (risk_level, key_factors, recommendation, disclaimer)
+  - Risk threshold alert at ≥ 0.70 probability
+  - Full ITDO loop: Insight → Trigger (alert) → Decision → Operation (task)
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 3 — DATASET & FEATURE SPECIFICATION
+────────────────────────────────────────────────────────────────────────────────
+PRIMARY DATASET: Pima Indians Diabetes Dataset (diabetes.csv)
+  Source: UCI / Kaggle (exactly as used in chapter_10/dataset/diabetes.csv)
+  Rows: 768 patients | Target: Outcome (0 = no diabetes, 1 = diabetes)
+
+FEATURE LIST (exact order must be preserved):
+  Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
+  BMI, DiabetesPedigreeFunction, Age
+
+KNOWN DATA QUALITY ISSUE (must handle):
+  Columns Glucose, BloodPressure, SkinThickness, Insulin, BMI contain
+  biologically impossible zeros → treat as missing (replace 0 with NaN)
+  before any imputation.
+
+CLASS IMBALANCE: ~35% positive class → use stratify + class_weight if needed.
+
+NORMAL RANGES (for deterministic flagging — hard-coded):
+  Glucose: (70, 99)
+  BloodPressure: (60, 80)
+  BMI: (18.5, 24.9)
+  Age: (0, 120)
+  (other features: no hard clinical range for flagging)
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 4 — DATA PIPELINE SPECIFICATION (CRISP-DM aligned with Chapter 10)
+────────────────────────────────────────────────────────────────────────────────
+PHASE 1 — DATA INGESTION & AUDIT (backend/data_pipeline.py)
+  1. Load dataset/diabetes.csv
+  2. Print shape, head, Outcome value_counts
+  3. Explicitly count zeros in [Glucose, BloodPressure, SkinThickness, Insulin, BMI]
+  4. Replace those zeros with np.nan
+  5. Assert no other unexpected nulls after replacement
+
+PHASE 2 — EXPLORATORY DATA ANALYSIS (notebooks/01_eda.ipynb)
+  1. Outcome distribution (countplot + pie)
+  2. Correlation heatmap (all features)
+  3. Boxplots: Glucose, BMI, Age, BloodPressure by Outcome
+  4. Histogram of Age / BMI stratified by Outcome
+  5. Export all plots to /reports/eda/ as PNG (300 DPI)
+
+PHASE 3 — PREPROCESSING (backend/preprocessing.py)
+  Must use sklearn.pipeline.Pipeline:
+  - SimpleImputer(strategy="median")
+  - StandardScaler()
+  - Train/test split: 80/20, stratify=y, random_state=42
+  - Keep feature order exactly as FEATURE_NAMES list
+
+PHASE 4 — MODEL TRAINING (backend/train.py)
+  Train TWO candidate models inside identical pipeline shapes:
+    Model A: RandomForestClassifier(n_estimators=200, max_depth=5, random_state=42)
+    Model B: LogisticRegression(max_iter=1000)
+
+  Evaluate on holdout: Accuracy, AUC-ROC, Confusion Matrix, Classification Report
+  5-fold Stratified CV on full data for RandomForest
+  Optional GridSearchCV on RandomForest:
+    n_estimators: [100, 200, 300]
+    max_depth: [3, 5, 7]
+  Select best model (prefer RandomForest if AUC competitive)
+
+PHASE 5 — MODEL EVALUATION (notebooks/02_evaluation.ipynb)
+  1. Confusion matrix (normalized)
+  2. ROC curve with AUC
+  3. Precision-Recall curve
+  4. Feature importance (RandomForest)
+  5. Export metrics + plots to /reports/model_report.md
+
+PHASE 6 — SERIALISATION
+  pickle.dump(best_pipeline, open("saved_models/diabetes_model.sav", "wb"))
+  Also save feature_names.json and metrics.json
+  Provide helper:
+    def predict_diabetes_proba(patient_data: list) -> float
+
+PHASE 7 — DETERMINISTIC FLAGGING + AGENTIC LAYER (core of Chapter 10)
+  NORMAL_RANGES dict (as specified above)
+  def flag_abnormal_features(patient_data: list, feature_names: list) -> list
+  Then feed ONLY the flags + probability into structured LLM prompt.
+
+  Use Pydantic model:
+  class ClinicalExplanation(BaseModel):
+      risk_level: str          # "low" | "moderate" | "high"
+      key_factors: list[str]
+      recommendation: str
+      disclaimer: str
+
+  System prompt must enforce:
+  - You are a clinical communication assistant, NOT a diagnosing physician
+  - Reason ONLY from the provided flags
+  - Never invent factors
+  - Always include strong disclaimer
+
+  Final callable:
+  def run_health_copilot(patient_data: list) -> dict:
+      probability = predict_diabetes_proba(patient_data)
+      flags = flag_abnormal_features(...)
+      explanation = explain_diagnosis(probability, flags)  # structured
+      return {"probability": probability, "explanation": explanation.model_dump()}
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 5 — BACKEND API SPECIFICATION (FastAPI)
+────────────────────────────────────────────────────────────────────────────────
+FILE: backend/main.py
+
+ROUTES:
+  POST /predict
+    Body: list[float] of length 8 (or Pydantic PatientFeatures)
+    Returns:
+    {
+      "probability": float,
+      "risk_level": "low"|"moderate"|"high",
+      "flags": list[str],
+      "key_factors": list[str],
+      "recommendation": str,
+      "disclaimer": str,
+      "prediction_id": uuid
+    }
+
+  POST /batch-predict
+    Body: list of patient feature lists (max 200)
+    Returns: list of prediction responses
+
+  GET /model-metrics
+    Returns: {auc_roc, accuracy, trained_at, model_version}
+
+  GET /health
+    Returns: {status: "ok", model_loaded: bool, version: str}
+
+MIDDLEWARE:
+  - CORS for VITE_APP_URL
+  - Rate limiting (slowapi)
+  - structlog JSON logging
+  - Structured HTTPException
+
+LLM Integration:
+  Prefer Gemini (Google AI Studio native) or OpenAI.
+  Use structured output / response_format / function calling.
+  Never send raw feature vector to LLM — only probability + flags.
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 6 — DATABASE SCHEMA (Supabase / PostgreSQL)
+────────────────────────────────────────────────────────────────────────────────
+FILE: supabase/migrations/001_init.sql
+
+Tables:
+  patients (
+    id uuid PK,
+    patient_ref text,
+    age int,
+    created_at timestamptz
+  )
+
+  predictions (
+    id uuid PK,
+    patient_id uuid FK,
+    probability numeric(5,4),
+    risk_level text CHECK (low/moderate/high),
+    flags jsonb,
+    key_factors jsonb,
+    recommendation text,
+    disclaimer text,
+    model_version text,
+    created_at timestamptz
+  )
+
+  alerts (
+    id uuid PK,
+    prediction_id uuid FK,
+    patient_id uuid FK,
+    threshold numeric,
+    status text DEFAULT 'OPEN' CHECK (OPEN/ACKNOWLEDGED/RESOLVED),
+    assigned_to uuid,
+    created_at, updated_at
+  )
+
+  tasks (
+    id uuid PK,
+    alert_id uuid FK,
+    patient_id uuid FK,
+    title text,
+    description text,
+    intervention text,
+    status text DEFAULT 'TODO' CHECK (TODO/IN_PROGRESS/DONE/CANCELLED),
+    due_date date,
+    assigned_to uuid,
+    created_by uuid,
+    created_at, updated_at
+  )
+
+Enable RLS on all tables + useful indexes.
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 7 — FRONTEND UI SPECIFICATION (React 18 + Vite + TypeScript)
+────────────────────────────────────────────────────────────────────────────────
+DESIGN SYSTEM:
+  Theme: Clean clinical (slate-50 / white base, teal-600 / cyan-600 accent)
+  Typography: Inter or DM Sans
+  Components: shadcn/ui + Recharts + Framer Motion
+  Accessibility: high contrast, large touch targets for clinical use
+
+PAGES & ROUTES:
+  /              → Dashboard (risk distribution, high-risk count, recent predictions)
+  /predict       → Single Patient Predictor (slicer / form UI)
+  /batch         → Batch CSV upload & predict
+  /alerts        → Alerts Management (Triggers)
+  /tasks         → Task Board Kanban (Operations)
+  /model         → Model Insights (metrics, ROC, feature importance)
+  /settings      → Threshold config, disclaimer editor
+
+SINGLE PREDICT PAGE (/predict) — Insights layer:
+  Left: form / sliders for the 8 features (with clinical units & normal range hints)
+  Right (live, 300ms debounce):
+    - Large probability gauge + risk badge (color coded)
+    - Abnormal flags chips
+    - Structured explanation cards (key_factors, recommendation)
+    - Strong disclaimer always visible
+    - "Save Prediction & Create Alert" button
+
+ALERTS & TASKS follow ITDO pattern exactly as in original attrition prompt.
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 8 — GOOGLE AI STUDIO DEPLOYMENT & VIBE CODING INSTRUCTIONS
+────────────────────────────────────────────────────────────────────────────────
+STEP 1 — SYSTEM INSTRUCTIONS
+  Paste SECTIONS 1–7 into System Instructions.
+  Model: Gemini 2.5 Pro (preferred for long context + code) or Gemini 2.0 Flash.
+
+STEP 2 — ATTACH CONTEXT
+  □ dataset/diabetes.csv
+  □ 01_the_ai_health_copilot.py (from the GitHub repo)
+  □ 01_the_ai_health_copilot.ipynb (optional but recommended)
+  □ Any existing Prompt.md or fullstack-analytics-builder spec
+
+STEP 3 — GENERATION SEQUENCE (vibe coding turns)
+  Turn 1: "Generate Phase 1–3 exactly following Chapter 10 patterns 
+           (data audit for zeros → NaN, Pipeline, train/test split).
+           Output: backend/data_pipeline.py, backend/preprocessing.py, notebooks/01_eda.ipynb"
+
+  Turn 2: "Generate Phase 4–6 (training, evaluation, serialisation + 
+           predict_diabetes_proba + flag_abnormal_features).
+           Output: backend/train.py, notebooks/02_evaluation.ipynb, 
+           saved_models/, reports/model_report.md"
+
+  Turn 3: "Generate the Agentic layer (ClinicalExplanation Pydantic + 
+           explain_diagnosis + run_health_copilot) and full FastAPI backend.
+           Output: backend/main.py, backend/schemas.py, backend/agent.py, requirements.txt"
+
+  Turn 4: "Generate Supabase migration 001_init.sql"
+
+  Turn 5: "Generate complete React frontend (all pages, components, hooks, stores)
+           with clinical UX and live prediction."
+
+  Turn 6: "Generate tests, Dockerfile, docker-compose.yml, 
+           .github/workflows/ci.yml, .env.example, README.md"
+
+STEP 4 — LOCAL RUN
+  pip install -r requirements.txt
+  npm install
+  uvicorn backend.main:app --reload &
+  npm run dev
+  → http://localhost:5173
+
+STEP 5 — DEPLOY
+  Frontend → Vercel
+  Backend  → Render / Cloud Run / Fly.io
+  Database → Supabase
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 9 — ENVIRONMENT VARIABLES (.env.example)
+────────────────────────────────────────────────────────────────────────────────
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+VITE_APP_URL=http://localhost:5173
+API_URL=http://localhost:8000
+
+MODEL_PATH=saved_models/diabetes_model.sav
+MODEL_VERSION=1.0.0
+
+# LLM (prefer Gemini in Google AI Studio context)
+GOOGLE_API_KEY=          # or GEMINI_API_KEY
+OPENAI_API_KEY=          # fallback
+LLM_MODEL=gemini-2.0-flash   # or gpt-4o
+
+────────────────────────────────────────────────────────────────────────────────
+SECTION 10 — FINAL DELIVERY FORMAT
+────────────────────────────────────────────────────────────────────────────────
+## App: AI Health Copilot Pro
+### Stack
+### Repository Structure (full tree)
+### Key Files (complete production code, no placeholders)
+### Run Locally
+### Test Results (E2E + model AUC-ROC / Accuracy)
+### Deploy instructions
+### Agentic Flow Diagram (optional mermaid)
+
+END OF PROMPT
+================================================================================
