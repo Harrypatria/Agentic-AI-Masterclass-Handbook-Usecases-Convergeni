@@ -114,12 +114,10 @@ pip install -r requirements.txt
 <div align="center">
 
 **Dr. Harry Patria**
-*Chief Data & AI Officer | Patria & Co. | Principal AI Engineer | i-Vigilant Technologies*
+*Chief Data & AI Officer | Patria & Co. | Principal AI Engineer | i-Vigilant Technologies UK*
 
 [![GitHub](https://img.shields.io/badge/GitHub-Harrypatria-181717?logo=github)](https://github.com/Harrypatria)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-harrypatria-0077B5?logo=linkedin)](https://www.linkedin.com/in/harrypatria/)
 [![Patria & Co.](https://img.shields.io/badge/Patria%20%26%20Co.-patriaco.co.uk-FF6B35)](https://www.patriaco.co.uk)
-
-*Indonesia's first AI consultancy. Building production-grade AI systems for energy, finance, and public sector.*
 
 ---
