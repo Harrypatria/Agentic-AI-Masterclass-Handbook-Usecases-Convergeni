@@ -109,12 +109,17 @@ pip install -r requirements.txt
 
 ---
 
+## 👤 Author
+
 <div align="center">
 
-## 🌟 Support This Project
-**Follow me on GitHub**: [![GitHub Follow](https://img.shields.io/github/followers/Harrypatria?style=social)](https://github.com/Harrypatria?tab=followers)
-**Connect on LinkedIn**: [![LinkedIn Follow](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/harry-patria/)
+**Dr. Harry Patria**
+*Chief Data & AI Officer | Patria & Co. | Principal AI Engineer | i-Vigilant Technologies*
 
-Click the buttons above to show your support!
+[![GitHub](https://img.shields.io/badge/GitHub-Harrypatria-181717?logo=github)](https://github.com/Harrypatria)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-harrypatria-0077B5?logo=linkedin)](https://www.linkedin.com/in/harrypatria/)
+[![Patria & Co.](https://img.shields.io/badge/Patria%20%26%20Co.-patriaco.co.uk-FF6B35)](https://www.patriaco.co.uk)
 
-</div>
+*Indonesia's first AI consultancy. Building production-grade AI systems for energy, finance, and public sector.*
+
+---
