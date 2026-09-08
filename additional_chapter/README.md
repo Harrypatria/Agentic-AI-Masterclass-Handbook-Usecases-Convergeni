@@ -4,6 +4,7 @@ Practical, beginner-friendly notebooks on Retrieval-Augmented Generation over st
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xOQMRJYJmpnaUUEVVWczmdcPW8n3QC_r?usp=sharing)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1o0yltGtgNz-k-EvlyrYJI3JN1-m56SSK?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1uT4XrzNIQw9n4_H4cNwbaSWWLKMMnPPY?usp=sharing)
 
 ## Notebooks
 
