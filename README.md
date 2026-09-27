@@ -68,6 +68,22 @@ Chapters 10, 12 and 14 include the real `diabetes.csv` dataset and a trained mod
 
 ---
 
+## AI Engineering
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│                     AGENTIC AI SYSTEM                        │
+├──────────────┬──────────────┬──────────────┬─────────────────┤
+│   Retrieval  │ Augmentation │  Reasoning   │   Evaluation    │
+├──────────────┴──────────────┴──────────────┴─────────────────┤
+│             Knowledge · Data · Models · Tools                │
+├──────────────────────────────────────────────────────────────┤
+│          API · Backend · Analytical Layer · Frontend         │
+├──────────────────────────────────────────────────────────────┤
+│        MLOps · Cloud · Monitoring · AI Guardrails            │
+└──────────────────────────────────────────────────────────────┘
+```
+
 ## Notebooks
 
 Every `.py` file is mirrored as a fully executed `.ipynb` notebook:
