@@ -126,7 +126,7 @@ pip install -r requirements.txt
 ---
 
 <div align="center">
-## 👤 Author
+👤 Author
 
 **Dr. Harry Patria**
 *Chief Data & AI Officer | Patria & Co. | Principal AI Engineer *
