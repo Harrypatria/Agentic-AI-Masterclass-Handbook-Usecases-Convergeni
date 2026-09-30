@@ -125,12 +125,11 @@ pip install -r requirements.txt
 
 ---
 
+<div align="center">
 ## 👤 Author
 
-<div align="center">
-
 **Dr. Harry Patria**
-*Chief Data & AI Officer | Patria & Co. | Principal AI Engineer | i-Vigilant Technologies UK*
+*Chief Data & AI Officer | Patria & Co. | Principal AI Engineer *
 
 [![GitHub](https://img.shields.io/badge/GitHub-Harrypatria-181717?logo=github)](https://github.com/Harrypatria)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-harrypatria-0077B5?logo=linkedin)](https://www.linkedin.com/in/harrypatria/)
